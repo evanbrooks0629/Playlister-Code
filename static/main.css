@@ -1,0 +1,86 @@
+.main-h1 {
+    color: #FFFFFF;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.subtitle, .directions {
+    color: #343A40;
+}
+
+.directions-container {
+    margin-top: 40px;
+}
+
+.load-btn {
+    margin-top: 20px;
+    width: 150px;
+}
+
+.fake-music {
+    width: 320px;
+    height: 320px;
+    background-color: #343A40;
+    border-radius: 25px;
+}
+
+.music-container {
+    margin-top: 100px;
+}
+
+.label-container {
+    margin-top: -20px;
+}
+
+.playlist-tracks {
+    width: 400px;
+    height: 350px;
+    background-color: #fff;
+    overflow-y: auto;
+    border-radius: 10px;
+    margin-left: -100px;
+}
+
+.pb {
+    margin-top: 10px;
+    width: 350px;
+}
+
+.controls-container {
+    margin-top: 100px;
+}
+
+.ctrl-btn {
+    margin-top: 30px;
+    width: 150px;
+    height: 60px;
+}
+
+.track-block {
+    height: 30px;
+    width: 100%;
+    background-color: #eeeeee;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.track-block > p {
+    font-size: 10px;
+}
+
+.track-name {
+    float: right;
+    display: inline;
+}
+
+.track-img {
+    height: 30px;
+    float: left;
+    display: inline;
+}
+
+.track-space {
+    height: 2px;
+    width: 100%;
+    background-color: #ffffff;
+}

@@ -1,0 +1,205 @@
+<!doctype html>
+
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/8451c36ed2.js" crossorigin="anonymous"></script>
+</head>
+<body style="background-color: #14a1e2;">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>  
+
+
+    <div class="container">
+        <div class="row heading-container">
+            <div class="col"></div>
+            <div class="col" style="width: 90%">
+                <!-- Heading -->
+                <center>
+                    <h1 class="main-h1">Playlister</h1>
+                    <h5 class="subtitle"><i>Really</i> have control over how you listen to music.</h5>
+                </center>
+            </div>
+            <div class="col">
+                <p></p>
+                <p style="float: right">Logged in as: <b>{{ username }}</p>
+            </div>
+        </div>
+
+        <div class="row directions-container">
+            <div class="col">
+                <!-- Directions -->
+                <h6 class="directions" style="float: right">First, <b>log into Spotify</b> by entering your username.</h6>
+                
+            </div>
+            <div class="col">
+                <form  method="post" action="#" id="loginForm">
+                    <div class="input-group mb-3" style="width: 50%">
+                        <input type="text" name="username" id="username" class="form-control" value="{{ username }}" aria-label="Username" aria-describedby="basic-addon1"/>
+                        <input type="submit" class="btn btn-primary" id="loginButton" />
+                    </div>
+            </form>
+            </div>
+        </div>
+        
+        <div class="row directions-container">
+            <div class="col">
+                <!-- Directions -->
+                    <h6 class="directions">Get started by clicking <b>Load Playlist</b> to load a playlist from your Spotify account or <b>Random Playlist</b> to generate a random playlist. Then, explore the functionality by clicking the buttons by the music panel.</h6>
+                    
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-dark load-btn" data-bs-toggle="modal" data-bs-target="#loadPlaylistModal">Select A Playlist</button>
+                <button type="button" class="btn btn-light load-btn" data-bs-toggle="modal" data-bs-target="#randomPlaylistModal">Random Playlist</button>
+
+                <div class="modal fade" id="loadPlaylistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form action="/" method="post">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Select A Playlist</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                {%for playlist in playlists%}
+                                <div class="playlist-block">
+                                    <input type="submit" name='select_playlist' class="btn btn-light" value='{{ playlist["name"] }}' />
+                                </div>
+                                {%endfor%}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="randomPlaylistModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form action="/" method="post">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Select A Playlist</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                {%for playlist in rand_playlists%}
+                                <div class="playlist-block">
+                                    <input type="submit" name='select_random_playlist' class="btn btn-light" value='{{ playlist["name"] }}' />
+                                </div>
+                                {%endfor%}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row music-container">
+            <div class="col">
+                <center>
+                    <div class="playlist-tracks">
+                        <p>Showing Queue for {{ playlist }}</p>
+                        {%for i in range(0,tracks|length) %}
+                            {% if i == index %}
+                                <div class="track-block" style="background-color: #888888">
+                                    <img src="{{ tracks[i]['image_url']['url'] }}" style="height: 100%; float: left; display: inline" />
+                                    <p style="font-size: 10px">{{ tracks[i]["name"] }} by {{ tracks[i]["artists"][0] }}</p>
+                                    <p style="float: right; font-size: 10px">Priority: {{ tracks[i]["popularity"] }}</p>
+                                </div>
+                            {% else %}
+                                <div class="track-block">
+                                    <img src="{{ tracks[i]['image_url']['url'] }}" style="height: 100%; float: left; display: inline" />
+                                    <p style="font-size: 10px">{{ tracks[i]["name"] }} by {{ tracks[i]["artists"][0] }}</p>
+                                    <p style="float: right; font-size: 10px">Priority: {{ tracks[i]["popularity"] }}</p>
+                                </div>
+                            {% endif %}
+                            <div class="track-space"></div>
+                        {%endfor%}
+                    </div>
+                </center>
+            </div>
+            <div class="col">
+                <!-- Music Player -->
+                <center>
+                    <div class="fake-music">
+                        {% if tracks|length > 0 %}
+                            <img src="{{ tracks[index]['image_url']['url'] }}" style="margin-top: 10px; border-radius: 20px" />
+                        {% endif %}
+
+                    </div>
+                    
+                </center>
+            </div><p></p>
+            <div class="col">
+                <form action="/" method="post">
+                    <input type="submit" name="submit_shuffle" value="Random Shuffle" class="btn btn-light ctrl-btn" />
+                    <input type="submit" name="submit_p_shuffle" value="Pseudo Shuffle" class="btn btn-light ctrl-btn" />
+                    <input type="submit" name="submit_f_t_b" value="Front To Back" class="btn btn-light ctrl-btn" />
+                    <input type="submit" name="submit_b_t_f" value="Back To Front" class="btn btn-light ctrl-btn" />
+                </form>
+            </div>
+        </div>
+
+        <div class="row label-container">
+            <div class="col">
+                <!-- Music Player -->
+                <center>
+                    {% if tracks|length > 0 %}
+                        <p>{{ tracks[index]["name"] }} by {{ tracks[index]["artists"][0] }}</p>
+                    {% endif %}
+                    
+                </center>
+            </div>
+        </div>
+
+        <div class="row progress-container">
+            <div class="col">
+                <!-- Music Player -->
+                <center>
+                    <form action="#" method="post">
+                        <button type="submit" class="btn btn-dark" name="back_button" style="margin-top: -45px">
+                            <i class="fa-solid fa-backward"></i>
+                        </button>
+                        <audio controls autoplay id="audioPlayer">
+                            {% if tracks|length > 0 %}
+                                <source src="{{ tracks[index]['preview_url'] }}" />
+                            {% endif %}
+                        </audio>
+                        <button type="submit" class="btn btn-dark" name="forward_button" style="margin-top: -45px">
+                            <i class="fa-solid fa-forward"></i>
+                        </button>
+                    </form>
+                </center>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+          integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+          crossorigin="anonymous"></script>
+
+    <script>
+        const audio = document.getElementById("audioPlayer");
+        audio.onended = function() {
+            let xhttp = new XMLHttpRequest();
+            let resp;
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    resp = this.responseText;
+                }
+            };
+            xhttp.open("POST", "/", true);
+            xhttp.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+            xhttp.send("done", true)
+            location.href = "/";
+        }
+    </script>
+
+</body>
+</html>
